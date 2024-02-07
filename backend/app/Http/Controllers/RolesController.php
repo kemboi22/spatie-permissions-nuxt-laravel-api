@@ -35,7 +35,7 @@ class RolesController extends Controller
     {
         $role = Role::query()->find($id);
         if (!$role) return $this->error($role,  "Not Found");
-        return $this->success($role->with('permissions'));
+        return $this->success($role->load('permissions'));
     }
 
     /**

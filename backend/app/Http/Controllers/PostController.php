@@ -13,15 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->success(Post::all());
     }
 
     /**
@@ -29,7 +21,13 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'body' => $request->body
+        ]);
+        if ($post) return $this->success($post);
+        return $this->error([]);
     }
 
     /**
@@ -37,15 +35,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
+        return $this->success($post);
     }
 
     /**
@@ -53,7 +43,13 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $update = $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'body' => $request->body
+        ]);
+        if ($update) return $this->success($update);
+        return $this->error([]);
     }
 
     /**

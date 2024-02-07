@@ -47,7 +47,13 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:permissions,name,'.$id
+        ]);
+        $permission = Permission::query()->find($id);
+
+        $update = $permission->update($request->only('name'));
+        return $this->success($update);
     }
 
     /**

@@ -21,23 +21,28 @@ class PermissionMiddleware
         {
             throw UnauthorizedException::notLoggedIn();
         }
+        // Check If permission is passed on the routes
         if (!is_null($permission))
         {
             $permissions = is_array($permission)
                 ? $permission
                 : explode('|', $permission);
         }
-        if ( is_null($permission) ) {
+        // Check if permission is null
+        if (is_null($permission) ) {
+            // get the route name
             $permission = $request->route()->getName();
-
+            // Add the permission to the array
             $permissions = array($permission);
         }
         foreach ($permissions as $permission) {
+            // check is the user has that permission to visit the route
             if ($authGuard->user()->can($permission)) {
+                // Proceed if the permission is granted
                 return $next($request);
             }
         }
-
-        throw UnauthorizedException::forPermissions($permissions);
+        // return a 403 response if the permission is not granted
+        return \response()->json(["success" => false,'message' => 'Unauthorized'], 403);
     }
 }

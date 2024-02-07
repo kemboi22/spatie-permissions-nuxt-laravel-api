@@ -24,3 +24,5 @@ Route::middleware(['auth:sanctum', 'permission'])->group(function (){
     Route::resource("permissions", \App\Http\Controllers\PermissionsController::class);
     Route::resource("users", \App\Http\Controllers\UserController::class);
 });
+
+require __DIR__.'/auth.php';

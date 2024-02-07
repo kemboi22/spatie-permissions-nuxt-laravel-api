@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {Permissions, Role} from "~/types";
+import type {Permissions, Role, User} from "~/types";
 
 const roles = ref<Role[]>([])
 
@@ -15,6 +15,12 @@ const fetchRoles = async () => {
   }
 }
 fetchRoles()
+const isViewModalOpen = ref<boolean>(false)
+const selectedRole = ref<Role>(<Role>{})
+const openViewModel = (role: Role) => {
+  isViewModalOpen.value = true
+  selectedRole.value = role
+}
 </script>
 
 <template>
@@ -34,11 +40,13 @@ fetchRoles()
           <TableCell>{{ role.name }}</TableCell>
           <TableCell>{{ role.guard_name }}</TableCell>
           <TableCell>
-            <Button>View</Button>
+            <Button  @click.prevent="openViewModel(role)">View</Button>
           </TableCell>
         </TableRow>
       </TableBody>
     </Table>
+    <RolesViewPermissionsComponent @close="() => isViewModalOpen = false" :is-open="isViewModalOpen"
+                                   :selected-role="selectedRole"/>
   </div>
 </template>
 

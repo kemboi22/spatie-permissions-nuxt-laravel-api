@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type {User} from "~/types";
+import type {Role, User} from "~/types";
 
 definePageMeta({
   name:"users.index",
@@ -19,6 +19,8 @@ const fetchUsers = async () => {
   }
 }
 fetchUsers()
+
+
 </script>
 
 <template>
@@ -43,6 +45,7 @@ fetchUsers()
         </TableRow>
       </TableBody>
     </Table>
+
   </div>
 </template>
 

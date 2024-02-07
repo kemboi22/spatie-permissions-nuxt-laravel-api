@@ -13,11 +13,14 @@
     "@nuxtjs/tailwindcss": "^6.11.2",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "nuxt": "^3.10.0",
+    "nuxt-headlessui": "^1.1.5",
     "shadcn-nuxt": "^0.8.7",
+    "typescript": "^5.3.3",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.1.1",
     "@vueuse/core": "^10.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

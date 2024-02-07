@@ -5,7 +5,8 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
     "@pinia-plugin-persistedstate/nuxt",
-      "shadcn-nuxt"
+    "shadcn-nuxt",
+    "nuxt-headlessui"
   ],
   shadcn: {
     /**
@@ -17,5 +18,10 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
+  },
+  runtimeConfig: {
+    public: {
+      baseUrl: "http://127.0.0.1:8000"
+    }
   }
 })

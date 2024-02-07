@@ -12,18 +12,22 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import {useAuthStore} from "~/Store/useAuthStore";
+const authStore = useAuthStore()
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Roles', href: '#', icon: UsersIcon, current: false },
-  { name: 'Permissions', href: '#', icon: FolderIcon, current: false },
-  { name: 'Users', href: '/users', icon: CalendarIcon, current: false }
+  { name: 'Roles', href: '/roles', icon: UsersIcon },
+  { name: 'Permissions', href: '/permissions', icon: FolderIcon },
+  { name: 'Users', href: '/users', icon: CalendarIcon }
 ]
 const userNavigation = [
   { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
 ]
 
 const sidebarOpen = ref(false)
+
+const currentRoute = (url: string) => {
+  return useRoute().fullPath == url
+}
 </script>
 
 <template>
@@ -54,10 +58,11 @@ const sidebarOpen = ref(false)
                   <li>
                     <ul role="list" class="-mx-2 space-y-1">
                       <li v-for="item in navigation" :key="item.name">
-                        <a :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                        <NuxtLink :to="item.href" :class="[currentRoute(item.href)? 'bg-gray-800 text-white' :
+                        'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                           <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                           {{ item.name }}
-                        </a>
+                        </NuxtLink>
                       </li>
                     </ul>
                   </li>
@@ -88,10 +93,11 @@ const sidebarOpen = ref(false)
           <li>
             <ul role="list" class="-mx-2 space-y-1">
               <li v-for="item in navigation" :key="item.name">
-                <a :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                <NuxtLink :to="item.href" :class="[currentRoute(item.href) ? 'bg-gray-800 text-white' :
+                'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                   <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                   {{ item.name }}
-                </a>
+                </NuxtLink>
               </li>
             </ul>
           </li>
@@ -145,6 +151,11 @@ const sidebarOpen = ref(false)
               <HeadlessMenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                 <HeadlessMenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                   <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
+                </HeadlessMenuItem>
+                <HeadlessMenuItem>
+                  <Button variant="link" to="/auth/login" class="block px-3 py-1 text-sm leading-6 text-gray-900"
+                            @click.prevent="authStore.logout()">Sign
+                    Out</Button>
                 </HeadlessMenuItem>
               </HeadlessMenuItems>
             </transition>

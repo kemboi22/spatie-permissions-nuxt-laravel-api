@@ -21,6 +21,11 @@ class PermissionMiddleware
         {
             throw UnauthorizedException::notLoggedIn();
         }
+        // Check If current Route is Exempted In the Middleware
+        if ($this->exemptedRoutes($request))
+        {
+            return $next($request);
+        }
         // Check If permission is passed on the routes
         if (!is_null($permission))
         {
@@ -44,5 +49,21 @@ class PermissionMiddleware
         }
         // return a 403 response if the permission is not granted
         return \response()->json(["success" => false,'message' => 'Unauthorized'], 403);
+    }
+
+    private function exemptedRoutes(Request $request): bool
+    {
+        $routeName = $request->route()->getName();
+        // Exempted Routes
+        $exemptedRoutes = [
+            'login',
+            'register',
+            'password.request',
+            'password.reset',
+            'verification.notice',
+            'verification.verify',
+            'verification.resend',
+        ];
+        return in_array($routeName, $exemptedRoutes);
     }
 }

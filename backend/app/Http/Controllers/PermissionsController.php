@@ -13,7 +13,7 @@ class PermissionsController extends Controller
      */
     public function index()
     {
-        //
+        return $this->success(Permission::query()->get());
     }
 
 

@@ -13,3 +13,13 @@ export interface User extends Default{
     email: string
     password?: string
 }
+export interface Permissions extends Default{
+    name: string
+    guard_name: string
+}
+
+export interface Role extends Default{
+    name: string
+    guard_name: string
+    permissions: Permissions[]
+}

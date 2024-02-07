@@ -1,10 +1,10 @@
 import type {LoginUser, RegisterUser, User} from "~/types";
-import {useToast} from "~/components/ui/toast";
+import {useToaster} from "~/composables/useToaster";
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref<User>(<User>{})
     const bearerToken = ref<string>('')
-    const toast = useToast()
+
 
     const login = async (loginUser: LoginUser) => {
         const {data, error, status} = await useApiFetch('/api/login', {
@@ -17,17 +17,17 @@ export const useAuthStore = defineStore('auth', () => {
             user.value = data.value?.data as User
             // @ts-ignore
             bearerToken.value = data.value?.token as string
-            toast.toast({
+            useToaster({
                 title: "Success Login",
                 description: "Success"
-            })
+            }, "success")
+            await navigateTo('/')
         }else {
-            toast.toast({
+            useToaster({
                 title: "Error",
                 description: "Error",
                 variant: 'destructive'
-            })
-
+            }, "error")
         }
     }
 
@@ -42,18 +42,41 @@ export const useAuthStore = defineStore('auth', () => {
             user.value = data.value?.data as User
             // @ts-ignore
             bearerToken.value = data.value?.token as string
-            toast.toast({
+            useToaster({
                 title: "Success Login",
                 description: "Success"
-            })
+            }, "success")
         }else {
-            toast.toast({
+            useToaster({
                 title: "Error",
                 description: "Error",
                 variant: 'destructive'
-            })
+            }, "error")
         }
     }
 
-    return {user, login, bearerToken, register}
+    const logout = async () => {
+        const {data, error} = await useApiFetch('/api/logout', {
+            method: "POST"
+        })
+        if (!error.value)
+        {
+            bearerToken.value = ""
+            user.value = <User>{}
+            useToaster({
+                title: "Logged Out", // @ts-ignore
+                description: data.value?.message as string,
+            }, "success")
+            await navigateTo("/auth/login")
+        }else{
+            useToaster({
+                title: "Error",
+                description: "Error",
+                variant: 'destructive'
+            }, "error")
+        }
+    }
+    return {user, login, bearerToken, register, logout}
+},{
+    persist: true
 })

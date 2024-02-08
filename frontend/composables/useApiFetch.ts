@@ -4,10 +4,10 @@ import {useAuthStore} from "~/Store/useAuthStore";
 export const useApiFetch = async<T> (url: string, options:  UseFetchOptions<T> = {} ) => {
   const config = useRuntimeConfig()
   const baseUrl = config.public.baseUrl+url
-  const token = useCookie('XSRF-TOKEN')
+  const token = ref(useCookie('XSRF-TOKEN').value)
   const authStore = useAuthStore()
   await $fetch(config.public.baseUrl+'/sanctum/csrf-cookie')
-  return useFetch(baseUrl, {
+  const response = await useFetch(baseUrl, {
     watch: false,
     ...options,
     headers: {
@@ -19,4 +19,5 @@ export const useApiFetch = async<T> (url: string, options:  UseFetchOptions<T> =
     },
     credentials: "include"
   });
+  return response
 }

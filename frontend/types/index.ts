@@ -12,6 +12,7 @@ export interface User extends Default{
     name: string
     email: string
     password?: string
+    permissions?: Permissions[]
 }
 export interface Permissions extends Default{
     name: string

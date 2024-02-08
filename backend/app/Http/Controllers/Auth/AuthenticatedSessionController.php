@@ -16,11 +16,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
-//        $request->session()->regenerate();
-
+        $user = Auth::user();
         return response()->json([
-            "data" => $request->user(),
+            "data" => [
+                ...$user->load('roles')->toArray(),
+                "permissions" => $user->getAllPermissions()
+            ],
             "message" => "User authenticated successfully",
             "token" => $request->user()->createToken("auth_token")->plainTextToken,
         ]);

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type {Permissions} from "~/types";
-
+definePageMeta({
+  middleware: ['auth', 'permission'],
+  name: 'permissions.index'
+})
 const permissions = ref<Permissions[]>([])
 const fetchPermissions = async () => {
   const {data, error} = await useApiFetch('/api/permissions') // @ts-ignore

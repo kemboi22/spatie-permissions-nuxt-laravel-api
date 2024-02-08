@@ -37,7 +37,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return response()->json([
-            "data" => $user,
+            "data" => [
+                ...$user->load(['roles']),
+                "permissions" => $user->permissions
+            ],
             "message" => "User created successfully",
             "token" => $user->createToken("auth_token")->plainTextToken,
         ]);

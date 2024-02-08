@@ -21,11 +21,18 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:roles,name'
+            'name' => 'required|unique:roles,name',
+            "permissions" => "array"
         ]);
 
-        $role = Role::create(['name' => $request->get('name')]);
-        return $this->success($role, "Role Created Success fully");
+        $role = Role::create(['name' => $request->name, "guard_name" => "api"]);
+        if ($role)
+        {
+            $role->syncPermissions($request->permissions);
+            return $this->success($role, "Role Created Success fully");
+        }
+        return $this->error([]);
+
     }
 
     /**

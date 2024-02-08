@@ -13,18 +13,17 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import {useAuthStore} from "~/Store/useAuthStore";
+import {useRolesAbility} from "~/composables/useRolesAbility";
 const authStore = useAuthStore()
 const navigation = [
-  { name: 'Roles', href: '/roles', icon: UsersIcon },
-  { name: 'Permissions', href: '/permissions', icon: FolderIcon },
-  { name: 'Users', href: '/users', icon: CalendarIcon }
+  { name: 'Roles', href: '/roles', icon: UsersIcon, visible: useRolesAbility('roles.index')},
+  { name: 'Permissions', href: '/permissions', icon: FolderIcon , visible: useRolesAbility('permissions.index')},
+  { name: 'Users', href: '/users', icon: CalendarIcon , visible: useRolesAbility('users.index')}
 ]
 const userNavigation = [
   { name: 'Your profile', href: '#' },
 ]
-
 const sidebarOpen = ref(false)
-
 const currentRoute = (url: string) => {
   return useRoute().fullPath == url
 }

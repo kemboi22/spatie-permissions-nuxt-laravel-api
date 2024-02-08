@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type {Permissions, Role, User} from "~/types";
-
+definePageMeta({
+  middleware: ['auth', 'permission'],
+  name: 'roles.index'
+})
 const roles = ref<Role[]>([])
 
 const fetchRoles = async () => {
@@ -10,7 +13,7 @@ const fetchRoles = async () => {
   {
     useToaster({
       title: "Error Occurred",
-      description: "An error Occurred"
+      description: error.value.data.message
     }, "error")
   }
 }
@@ -25,6 +28,7 @@ const openViewModel = (role: Role) => {
 
 <template>
   <div>
+    <RolesCreateRolesComponent/>
     <Table>
       <TableHeader>
         <TableRow>
